@@ -1,3 +1,8 @@
+from time import sleep
+try:
+    import git_python_handler
+except:
+    pass
 import serial, sys
 from time import sleep, time
 from micropyGPS import MicropyGPS
