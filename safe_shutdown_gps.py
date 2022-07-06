@@ -15,6 +15,8 @@ import datetime
 import time
 import pickle
 from git import Repo
+import serial
+
 
 DEFINED_PI_ZERO_W       = False
 DEFINED_PI_3B_PLUS      = False
@@ -32,12 +34,116 @@ conn_started_ts = 0
 disconn_started_ts = 0
 disconnected = False
 
+SECONDS_BETWEEN_READS   = 5
+INIT_DELAY              = 2
+READ_COUNT              = 0
+STREAM_COUNT            = 0
+DATA_POINT              = 2 # GPS lat/lgt recorded before transmission
+SERIAL_PORT             = '/dev/ttyUSB2'
+SERIAL_BAUD             = 115200
+
 try:
     import machine
     gettime = lambda: time.ticks_ms()
 except ImportError:
     const = lambda x: x
     gettime = lambda: int(time.time() * 1000) 
+
+
+def getCGNSINF():
+    ser = serial.Serial(SERIAL_PORT, SERIAL_BAUD, timeout=5, rtscts=True, dsrdtr=True) 
+    ser.write(b"AT+CGNSINF\r")
+    # print("Getting Speed/Satellite Count...")
+    while True:
+        response = ser.readline().decode()
+        if "+CGNSINF: 1," in response:
+            array = response.split(",")
+            grun = array[0] # GNSS run status
+            sfix = array[1] # Fix status
+            utct = array[2] # UTC date & time
+            clat = array[3] # latitude
+            clon = array[4] # longitude
+            altd = array[5] # MSL altitude
+            spdg = array[6] # speed over ground
+            csog = array[7] # course over ground
+            mfix = array[8] # fix mode
+            rsv1 = array[9] # reserved1
+            hdop = array[10] # HDOP horizontal dilution of precision
+            pdop = array[11] # PDOP position (3D) dilution of precision
+            vdop = array[12] # VDOP vertical dilution of precision
+            rsv2 = array[13] # reserved2
+            gnsv = array[14] # GNSS Satellites in View
+            gnsu = array[15] # GNSS Satellites in Use
+            glns = array[16] # GLONASS Satellites Used
+            rsv3 = array[17] # reserved3
+            cnom = array[18] # C/N0 max
+            hpa0 = array[19] # Horizontal Position Accuracy
+            vpa0 = array[20] # Vertical Position Accuracy
+
+            # print("MSL altitude:{}m = {}ft".format(altd,round(float(altd)/0.3048),4))
+            # print("Speed over Ground:{} km/h".format(spdg))
+            # print("Course over Ground:{} degrees".format(csog))
+            # print("HDOP:{}".format(hdop))
+            # print("PDOP:{}".format(pdop))
+            # print("VDOP:{}".format(vdop))
+            # print("C/N0 max:{} dBHz".format(cnom))
+            # print("HPA:{} m".format(hpa0))
+            # print("VPA:{} m".format(vpa0))
+            # print("GNSS Satellites in View:{}".format(gnsv))
+            # print("GNSS Satellites in Use:{}".format(gnsu))
+            # print("GLONASS in Use:{}".format(glns))
+            return utct, clat, clon, spdg, gnsv, gnsu, glns
+        else:
+            print('Waiting for response')
+        sleep(0.5)
+
+def main_without_pppd():
+    global READ_COUNT
+    # Initialize the Initial State streamer
+    # Start the program by opening the cellular connection and creating a bucket for our data
+    for c in range(INIT_DELAY):
+        print ("Starting in T-minus {} second".format(INIT_DELAY-c))
+        sleep(1)
+
+    while True:
+        # Make sure there's a GPS fix before proceeding to data acquisition
+        if checkForFix():
+            READ_COUNT+=1
+            utct, clat, clon, spdg, gnsv, gnsu, glns = getCGNSINF() # 6.7.2022 Wednesday
+            
+            utct_float  = float(utct)
+            utct_int    = int(utct_float)
+            utct_string = str(utct_int)
+
+            date_time   = []
+            time_array  = []
+            datelength  = 8
+            timelength  = 2
+            for i in range(0, len(utct_string), datelength):
+                date_time.append(utct_string[i : i+datelength])
+
+            time_int = int(date_time[1]) + 80000 
+
+            time_str = str(time_int)
+            for index in range(0, len(time_str), timelength):
+                time_array.append(time_str[index : index+timelength])
+            
+            time_f = time_array[0] + ':' + time_array[1] + ':' + time_array[2]
+            # print("Date:{}".format(date_time[0]))
+            # print("Time:{}".format(time_f))
+
+            payload =   "date:" + str(date_time[0]) + ", " + \
+                        "time:" + str(time_f)       + ", " + \
+                        "clat:" + str(clat)  + ", " + \
+                        "clon:" + str(clon)  + ", " + \
+                        "spdg:" + str(spdg)  + ", " + \
+                        "gnsv:" + str(gnsv)  + ", " + \
+                        "gnsu:" + str(gnsu)  + ", " + \
+                        "glns:" + str(glns)  
+
+            print (payload)
+            print("Saving read #{} into buffer.\n\n".format(READ_COUNT))
+            sleep(SECONDS_BETWEEN_READS)
 
 def load_hexsha_count() -> str:
     repo_path = '/home/pi/gps-raspi/'

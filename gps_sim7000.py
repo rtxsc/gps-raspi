@@ -221,51 +221,53 @@ def main_without_pppd():
         sleep(1)
     # streamer = Streamer(bucket_name=BUCKET_NAME, bucket_key=BUCKET_KEY, access_key=ACCESS_KEY, buffer_size=20)
     # Wait long enough for the request to complete
-    while True:
-        # Make sure there's a GPS fix before proceeding to data acquisition
-        if checkForFix():
-            READ_COUNT+=1
-            utct, clat, clon, spdg, gnsv, gnsu, glns = getCGNSINF() # 6.7.2022 Wednesday
-            
-            utct_float  = float(utct)
-            utct_int    = int(utct_float)
-            utct_string = str(utct_int)
+  
+    # Make sure there's a GPS fix before proceeding to data acquisition
+    if checkForFix():
+        READ_COUNT+=1
+        utct, clat, clon, spdg, gnsv, gnsu, glns = getCGNSINF() # 6.7.2022 Wednesday
+        
+        utct_float  = float(utct)
+        utct_int    = int(utct_float)
+        utct_string = str(utct_int)
 
-            date_time   = []
-            time_array  = []
-            datelength  = 8
-            timelength  = 2
-            for i in range(0, len(utct_string), datelength):
-                date_time.append(utct_string[i : i+datelength])
+        date_time   = []
+        time_array  = []
+        datelength  = 8
+        timelength  = 2
+        for i in range(0, len(utct_string), datelength):
+            date_time.append(utct_string[i : i+datelength])
 
-            time_int = int(date_time[1]) + 80000 
+        time_int = int(date_time[1]) + 80000 
 
-            time_str = str(time_int)
-            for index in range(0, len(time_str), timelength):
-                time_array.append(time_str[index : index+timelength])
-            
-            time_f = time_array[0] + ':' + time_array[1] + ':' + time_array[2]
-            # print("Date:{}".format(date_time[0]))
-            # print("Time:{}".format(time_f))
+        time_str = str(time_int)
+        for index in range(0, len(time_str), timelength):
+            time_array.append(time_str[index : index+timelength])
+        
+        time_f = time_array[0] + ':' + time_array[1] + ':' + time_array[2]
+        # print("Date:{}".format(date_time[0]))
+        # print("Time:{}".format(time_f))
 
-            payload =   "date:" + str(date_time[0]) + ", " + \
-                        "time:" + str(time_f)       + ", " + \
-                        "clat:" + str(clat)  + ", " + \
-                        "clon:" + str(clon)  + ", " + \
-                        "spdg:" + str(spdg)  + ", " + \
-                        "gnsv:" + str(gnsv)  + ", " + \
-                        "gnsu:" + str(gnsu)  + ", " + \
-                        "glns:" + str(glns)  
+        payload =   "date:" + str(date_time[0]) + ", " + \
+                    "time:" + str(time_f)       + ", " + \
+                    "clat:" + str(clat)  + ", " + \
+                    "clon:" + str(clon)  + ", " + \
+                    "spdg:" + str(spdg)  + ", " + \
+                    "gnsv:" + str(gnsv)  + ", " + \
+                    "gnsu:" + str(gnsu)  + ", " + \
+                    "glns:" + str(glns)  
 
-            print (payload)
-            print("Saving read #{} into buffer.\n\n".format(READ_COUNT))
-            # Buffer the coordinates to be streamed
-            # streamer.log("Coordinates",coord)
-            sleep(SECONDS_BETWEEN_READS)
-            # print "streaming location to Initial State"
-            # Flush the streaming queue and send the data
-            # streamer.flush()
-            # print "streaming complete"
+        print (payload)
+        print("Saving read #{} into buffer.\n\n".format(READ_COUNT))
+        # Buffer the coordinates to be streamed
+        # streamer.log("Coordinates",coord)
+        sleep(SECONDS_BETWEEN_READS)
+        # print "streaming location to Initial State"
+        # Flush the streaming queue and send the data
+        # streamer.flush()
+        # print "streaming complete"
 
 if __name__ == "__main__":
-    main_without_pppd()
+    while(1):
+        print("forever loop main")
+        main_without_pppd()
