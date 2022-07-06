@@ -9,6 +9,6 @@ try:
 except:
     pass
 
-for i in range(0,100,20):
+for i in range(0,100,10):
     print("GPS TEST COUNTDOWN: {}".format(i))
-    sleep(0.5)
+    sleep(1)
