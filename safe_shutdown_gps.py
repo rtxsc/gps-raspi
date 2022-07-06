@@ -50,7 +50,8 @@ except ImportError:
     gettime = lambda: int(time.time() * 1000) 
 
 def checkForFix():
-    print ("checking for fix")
+    fix_search_count = 0
+    # print ("checking for fix")
     # Start the serial connection SIM7000E - ttyUSB2 on Pi Zero W
     ser = serial.Serial(SERIAL_PORT, SERIAL_BAUD, timeout=5, rtscts=True, dsrdtr=True) 
     # Turn on the GPS
@@ -63,7 +64,7 @@ def checkForFix():
             break
     # Ask for the navigation info parsed from NMEA sentences
     ser.write(b"AT+CGNSINF\r")
-    print("Getting NMEA information from Satellite...")
+    # print("Getting NMEA information from Satellite...")
     while True:
         response = ser.readline()
         # Check if a fix was found
@@ -78,6 +79,8 @@ def checkForFix():
             print ("Unable to find fix. still looking for fix...")
             return False
         else:
+            fix_search_count += 1
+            print ("\nRetrying obtaining fix for the {} times".format(fix_search_count))
             ser.write(b"AT+CGNSINF\r")
             # DO NOT RETURN FALSE HERE CUZ IT PREVENTS THE RETRYING OF FINDING FIX
 
