@@ -198,9 +198,17 @@ try:
                         playTrack("local-ahead-origin.wav")
                     print('[INFO] Your local commit is {} commits ahead previous saved origin.\n'.format(abs(diff)))
                     # repo.remotes.origin.push()
-                    print('[INFO] Pulling commit no matter what')
+                    print('[INFO] Updating saved commit with the latest commit count from origin')
                     repo.remotes.origin.pull()
                     save_hexsha_count(str(repo.head.commit.hexsha), int(commit.count()))
+                    print("""
+                       __  __          __      __           __
+                      / / / /___  ____/ /___ _/ /____  ____/ /
+                     / / / / __ \/ __  / __ `/ __/ _ \/ __  / 
+                    / /_/ / /_/ / /_/ / /_/ / /_/  __/ /_/ /  
+                    \____/ .___/\__,_/\__,_/\__/\___/\__,_/   
+                        /_/                                                      
+                    """)
                 else:
                     print('[INFO] You are up-to-date with remote repo.')
 
