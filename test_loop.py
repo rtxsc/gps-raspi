@@ -5,5 +5,5 @@ except:
     pass
 
 for i in range(0,100,5):
-    print("i:{}".format(i))
+    print("value of i:{}".format(i))
     sleep(1)
