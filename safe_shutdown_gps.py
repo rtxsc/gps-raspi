@@ -402,6 +402,11 @@ try:
         # print("SSID {} connected time:{}s".format(previous_ssid,conn_elapse))
         for i in range (0,127,2):
             if not disconnected:
+                try:
+                    date_time,time_f,clat, clon, spdg, gnsv, gnsu, glns = main_without_pppd()
+                except TypeError:
+                    print("TypeError avoided due to GPS not able to find fix")
+                    pass
                 oled.fill(0)
                 if i < 25:
                     oled.text('Conn:'+str(conn_elapse_pretty)+'s', 0, 0, True)
@@ -416,15 +421,9 @@ try:
                     oled.text(committed_date, 0, 10, True)
                     oled.text("Commit #" + commit_number, 0, 20, True)
                 elif i >= 75 and i < 100:
-                    try:
-                        date_time,time_f,clat, clon, spdg, gnsv, gnsu, glns = main_without_pppd()
-                        oled.text('GPS_T:'+time_f, 0, 0, True)
-                        oled.text(clat+','+clon, 0, 10, True)
-                        oled.text('GNSV:'+gnsv+' U:'+gnsu+' GLNS:'+glns, 0, 20, True)
-                    except TypeError:
-                        print("TypeError avoided due to GPS not able to find fix")
-                        pass
-             
+                    oled.text('GPS_T:'+time_f, 0, 0, True)
+                    oled.text(clat+','+clon, 0, 10, True)
+                    oled.text('GNSV:'+gnsv+' U:'+gnsu+' GLNS:'+glns, 0, 20, True)
                 else:
                     # if not DEFINED_PI_ZERO_W:
                     #     oled.text('PRESS D23 to RESTART', 0, 0, True)
