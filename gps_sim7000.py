@@ -246,13 +246,13 @@ def main_without_pppd():
             # print("Date:{}".format(date_time[0]))
             # print("Time:{}".format(time_f))
 
-            payload =   "date:" + str(date_time[0]) + "," + \
-                        "time:" + str(time_f)       + "," + \
-                        "clat:" + str(clat)  + "," + \
-                        "clon:" + str(clon)  + "," + \
-                        "spdg:" + str(spdg)  + "," + \
-                        "gnsv:" + str(gnsv)  + "," + \
-                        "gnsu:" + str(gnsu)  + "," + \
+            payload =   "date:" + str(date_time[0]) + ", " + \
+                        "time:" + str(time_f)       + ", " + \
+                        "clat:" + str(clat)  + ", " + \
+                        "clon:" + str(clon)  + ", " + \
+                        "spdg:" + str(spdg)  + ", " + \
+                        "gnsv:" + str(gnsv)  + ", " + \
+                        "gnsu:" + str(gnsu)  + ", " + \
                         "glns:" + str(glns)  
 
             print (payload)
