@@ -225,12 +225,12 @@ def main_without_pppd():
             READ_COUNT+=1
             utct, clat, clon, spdg, gnsv, gnsu, glns = getCGNSINF()
             
-            payload =   "utct:" + str(utct)  + "," + 
-                        "clat:" + str(clat)  + "," + 
-                        "clon:" + str(clon)  + "," +
-                        "spdg:" + str(spdg)  + "," +  
-                        "gnsv:" + str(gnsv)  + "," +  
-                        "gnsu:" + str(gnsu)  + "," +  
+            payload =   "utct:" + str(utct)  + "," + \
+                        "clat:" + str(clat)  + "," + \
+                        "clon:" + str(clon)  + "," + \
+                        "spdg:" + str(spdg)  + "," + \
+                        "gnsv:" + str(gnsv)  + "," + \
+                        "gnsu:" + str(gnsu)  + "," + \
                         "glns:" + str(glns)  
 
             print (payload)
