@@ -99,51 +99,44 @@ def getCGNSINF():
 
 def main_without_pppd():
     global READ_COUNT
-    # Initialize the Initial State streamer
-    # Start the program by opening the cellular connection and creating a bucket for our data
-    for c in range(INIT_DELAY):
-        print ("Starting in T-minus {} second".format(INIT_DELAY-c))
-        sleep(1)
+    # Make sure there's a GPS fix before proceeding to data acquisition
+    if checkForFix():
+        READ_COUNT+=1
+        utct, clat, clon, spdg, gnsv, gnsu, glns = getCGNSINF() # 6.7.2022 Wednesday
+        
+        utct_float  = float(utct)
+        utct_int    = int(utct_float)
+        utct_string = str(utct_int)
 
-    while True:
-        # Make sure there's a GPS fix before proceeding to data acquisition
-        if checkForFix():
-            READ_COUNT+=1
-            utct, clat, clon, spdg, gnsv, gnsu, glns = getCGNSINF() # 6.7.2022 Wednesday
-            
-            utct_float  = float(utct)
-            utct_int    = int(utct_float)
-            utct_string = str(utct_int)
+        date_time   = []
+        time_array  = []
+        datelength  = 8
+        timelength  = 2
+        for i in range(0, len(utct_string), datelength):
+            date_time.append(utct_string[i : i+datelength])
 
-            date_time   = []
-            time_array  = []
-            datelength  = 8
-            timelength  = 2
-            for i in range(0, len(utct_string), datelength):
-                date_time.append(utct_string[i : i+datelength])
+        time_int = int(date_time[1]) + 80000 
 
-            time_int = int(date_time[1]) + 80000 
+        time_str = str(time_int)
+        for index in range(0, len(time_str), timelength):
+            time_array.append(time_str[index : index+timelength])
+        
+        time_f = time_array[0] + ':' + time_array[1] + ':' + time_array[2]
+        # print("Date:{}".format(date_time[0]))
+        # print("Time:{}".format(time_f))
 
-            time_str = str(time_int)
-            for index in range(0, len(time_str), timelength):
-                time_array.append(time_str[index : index+timelength])
-            
-            time_f = time_array[0] + ':' + time_array[1] + ':' + time_array[2]
-            # print("Date:{}".format(date_time[0]))
-            # print("Time:{}".format(time_f))
+        payload =   "date:" + str(date_time[0]) + ", " + \
+                    "time:" + str(time_f)       + ", " + \
+                    "clat:" + str(clat)  + ", " + \
+                    "clon:" + str(clon)  + ", " + \
+                    "spdg:" + str(spdg)  + ", " + \
+                    "gnsv:" + str(gnsv)  + ", " + \
+                    "gnsu:" + str(gnsu)  + ", " + \
+                    "glns:" + str(glns)  
 
-            payload =   "date:" + str(date_time[0]) + ", " + \
-                        "time:" + str(time_f)       + ", " + \
-                        "clat:" + str(clat)  + ", " + \
-                        "clon:" + str(clon)  + ", " + \
-                        "spdg:" + str(spdg)  + ", " + \
-                        "gnsv:" + str(gnsv)  + ", " + \
-                        "gnsu:" + str(gnsu)  + ", " + \
-                        "glns:" + str(glns)  
-
-            print (payload)
-            print("Saving read #{} into buffer.\n\n".format(READ_COUNT))
-            sleep(SECONDS_BETWEEN_READS)
+        print (payload)
+        print("Saving read #{} into buffer.\n\n".format(READ_COUNT))
+        sleep(SECONDS_BETWEEN_READS)
 
 def load_hexsha_count() -> str:
     repo_path = '/home/pi/gps-raspi/'

@@ -216,9 +216,6 @@ def main_without_pppd():
     global READ_COUNT
     # Initialize the Initial State streamer
     # Start the program by opening the cellular connection and creating a bucket for our data
-    for c in range(INIT_DELAY):
-        print ("Starting in T-minus {} second".format(INIT_DELAY-c))
-        sleep(1)
     # streamer = Streamer(bucket_name=BUCKET_NAME, bucket_key=BUCKET_KEY, access_key=ACCESS_KEY, buffer_size=20)
     # Wait long enough for the request to complete
   
@@ -262,12 +259,17 @@ def main_without_pppd():
         # Buffer the coordinates to be streamed
         # streamer.log("Coordinates",coord)
         sleep(SECONDS_BETWEEN_READS)
+        return date_time[0],time_f,clat, clon, spdg, gnsv, gnsu, glns
         # print "streaming location to Initial State"
         # Flush the streaming queue and send the data
         # streamer.flush()
         # print "streaming complete"
 
 if __name__ == "__main__":
+    for c in range(INIT_DELAY):
+        print ("Starting in T-minus {} second".format(INIT_DELAY-c))
+        sleep(1)
+
     while(1):
         print("forever loop main")
-        main_without_pppd()
+        print(main_without_pppd())
