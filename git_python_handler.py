@@ -180,14 +180,14 @@ try:
                     diff = repo.head.commit.count() - current_committed_count
                     print("diff = repo head [%d] - current_committed_count [%d]" %(repo.head.commit.count(), current_committed_count))
                 if diff > 0:
-                    print('[INFO] Your local commit is {} commits behind origin.\n'.format(diff))
+                    print('[INFO] Your local commit is [{}] commits behind origin.\n'.format(diff))
                     if not DEFINED_PI_ZERO_W and ENABLE_AUDIO:
                         command = "espeak -ven+f4 -k5 -s125 -a 100 -g10 Your_local_commit_is_%s_commits_behind_origin" % str(diff)
                         process = subprocess.Popen(command.split(), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
                         process.communicate()[0]
                         playTrack("local-behind-origin.wav")
                         playTrack("pull-repo.wav")
-                    print('[INFO] Pulling commit {} from origin'.format(repo.head.commit.count()))
+                    print('[INFO] Pulling commit [{}] from origin'.format(repo.head.commit.count()))
                     repo.remotes.origin.pull()
                     save_hexsha_count(str(repo.head.commit.hexsha), int(commit.count()))
                     if not DEFINED_PI_ZERO_W and ENABLE_AUDIO:
@@ -196,10 +196,8 @@ try:
                 elif diff < 0:
                     if not DEFINED_PI_ZERO_W and ENABLE_AUDIO:
                         playTrack("local-ahead-origin.wav")
-                    print('[INFO] Your local commit is {} commits ahead previous saved origin.\n'.format(abs(diff)))
-                    # repo.remotes.origin.push()
-                    print('[INFO] Updating saved commit with the latest commit count from origin')
-                    repo.remotes.origin.pull()
+                    print('[INFO] Your local commit is [{}] commits ahead previous saved origin.\n'.format(abs(diff)))
+                    print('[INFO] Updating saved commit with the latest commit count from origin! No push/pull required')
                     save_hexsha_count(str(repo.head.commit.hexsha), int(commit.count()))
                     print("""
                        __  __          __      __           __
