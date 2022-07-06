@@ -434,7 +434,7 @@ try:
                         sleep(1)
                         pass
                     oled.text('GPS_TIME:'+time_f, 0, 0, True)
-                    oled.text(clat+','+clon, 0, 10, True)
+                    oled.text('C:'+clat+','+clon, 0, 10, True)
                     oled.text('GNSV:'+gnsv+' USE:'+gnsu+' GLNS:'+glns, 0, 20, True)
                 else:
                     # if not DEFINED_PI_ZERO_W:
