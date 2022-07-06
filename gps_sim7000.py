@@ -106,7 +106,7 @@ def getCoord():
     # Start the serial connection SIM7000E
     ser = serial.Serial(SERIAL_PORT, SERIAL_BAUD, timeout=5, rtscts=True, dsrdtr=True) 
     ser.write(b"AT+CGNSINF\r")
-    print("Getting Latitude/Longitude...")
+    # print("Getting Latitude/Longitude...")
     while True:
         response = ser.readline().decode()
         if "+CGNSINF: 1," in response:
@@ -121,7 +121,7 @@ def getCoord():
 def getCGNSINF():
     ser = serial.Serial(SERIAL_PORT, SERIAL_BAUD, timeout=5, rtscts=True, dsrdtr=True) 
     ser.write(b"AT+CGNSINF\r")
-    print("Getting Speed/Satellite Count...")
+    # print("Getting Speed/Satellite Count...")
     while True:
         response = ser.readline().decode()
         if "+CGNSINF: 1," in response:
@@ -222,23 +222,19 @@ def main_without_pppd():
     while True:
         # Make sure there's a GPS fix before proceeding to data acquisition
         if checkForFix():
+            READ_COUNT+=1
             getCGNSINF()
-
-        if checkForFix():
-            # Get lat and long
-            if getCoord():
-                READ_COUNT+=1
-                latitude, longitude = getCoord()
-                coord = "lat:" + str(latitude) + "," + "lng:" + str(longitude)
-                print (coord)
-                print("Saving read #{} into buffer.\n".format(READ_COUNT))
-                # Buffer the coordinates to be streamed
-                # streamer.log("Coordinates",coord)
-                sleep(SECONDS_BETWEEN_READS)
-                # print "streaming location to Initial State"
-                # Flush the streaming queue and send the data
-                # streamer.flush()
-                # print "streaming complete"
+            latitude, longitude = getCoord()
+            coord = "lat:" + str(latitude) + "," + "lng:" + str(longitude)
+            print (coord)
+            print("Saving read #{} into buffer.\n".format(READ_COUNT))
+            # Buffer the coordinates to be streamed
+            # streamer.log("Coordinates",coord)
+            sleep(SECONDS_BETWEEN_READS)
+            # print "streaming location to Initial State"
+            # Flush the streaming queue and send the data
+            # streamer.flush()
+            # print "streaming complete"
 
 if __name__ == "__main__":
     main_without_pppd()
