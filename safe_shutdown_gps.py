@@ -418,12 +418,13 @@ try:
                 elif i >= 75 and i < 100:
                     try:
                         date_time,time_f,clat, clon, spdg, gnsv, gnsu, glns = main_without_pppd()
+                        oled.text('GPS_T:'+time_f, 0, 0, True)
+                        oled.text(clat+','+clon, 0, 10, True)
+                        oled.text('GNSV:'+gnsv+' U:'+gnsu+' GLNS:'+glns, 0, 20, True)
                     except TypeError:
                         print("TypeError avoided due to GPS not able to find fix")
                         pass
-                    oled.text('GPS_T:'+time_f, 0, 0, True)
-                    oled.text(clat+','+clon, 0, 10, True)
-                    oled.text('GNSV:'+gnsv+' U:'+gnsu+' GLNS:'+glns, 0, 20, True)
+             
                 else:
                     # if not DEFINED_PI_ZERO_W:
                     #     oled.text('PRESS D23 to RESTART', 0, 0, True)
