@@ -110,7 +110,7 @@ def getCoord():
     ser = serial.Serial(SERIAL_PORT, SERIAL_BAUD, timeout=5, rtscts=True, dsrdtr=True) 
     ser.write(b"AT+CGNSINF\r")
     while True:
-        response = ser.readline()
+        response = ser.readline().decode()
         if b"+CGNSINF: 1," in response:
             # Split the reading by commas and return the parts referencing lat and long
             array = response.split(b",")
@@ -123,43 +123,45 @@ def getCoord():
 def getCGNSINF():
     ser = serial.Serial(SERIAL_PORT, SERIAL_BAUD, timeout=5, rtscts=True, dsrdtr=True) 
     ser.write(b"AT+CGNSINF\r")
-    response = ser.readline()
-    if b"+CGNSINF: 1," in response:
-        array = response.split(b",")
-        grun = array[0] # GNSS run status
-        sfix = array[1] # Fix status
-        utct = array[2] # UTC date & time
-        clat = array[3] # latitude
-        clon = array[4] # longitude
-        altd = array[5] # MSL altitude
-        spdg = array[6] # speed over ground
-        csog = array[7] # course over ground
-        mfix = array[8] # fix mode
-        rsv1 = array[9] # reserved1
-        hdop = array[10] # HDOP horizontal dilution of precision
-        pdop = array[11] # PDOP position (3D) dilution of precision
-        vdop = array[12] # VDOP vertical dilution of precision
-        rsv2 = array[13] # reserved2
-        gnsv = array[14] # GNSS Satellites in View
-        gnsu = array[15] # GNSS Satellites in Use
-        glns = array[16] # GLONASS Satellites Used
-        rsv3 = array[17] # reserved3
-        cnom = array[18] # C/N0 max
-        hpa0 = array[19] # Horizontal Position Accuracy
-        vpa0 = array[20] # Vertical Position Accuracy
+    while True:
+        response = ser.readline().decode()
+        if b"+CGNSINF: 1," in response:
+            array = response.split(b",")
+            grun = array[0] # GNSS run status
+            sfix = array[1] # Fix status
+            utct = array[2] # UTC date & time
+            clat = array[3] # latitude
+            clon = array[4] # longitude
+            altd = array[5] # MSL altitude
+            spdg = array[6] # speed over ground
+            csog = array[7] # course over ground
+            mfix = array[8] # fix mode
+            rsv1 = array[9] # reserved1
+            hdop = array[10] # HDOP horizontal dilution of precision
+            pdop = array[11] # PDOP position (3D) dilution of precision
+            vdop = array[12] # VDOP vertical dilution of precision
+            rsv2 = array[13] # reserved2
+            gnsv = array[14] # GNSS Satellites in View
+            gnsu = array[15] # GNSS Satellites in Use
+            glns = array[16] # GLONASS Satellites Used
+            rsv3 = array[17] # reserved3
+            cnom = array[18] # C/N0 max
+            hpa0 = array[19] # Horizontal Position Accuracy
+            vpa0 = array[20] # Vertical Position Accuracy
 
-        # print("MSL altitude:{}m = {}ft".format(altd,round(float(altd)/0.3048),4))
-        # print("Speed over Ground:{} km/h".format(spdg))
-        # print("Course over Ground:{} degrees".format(csog))
-        # print("HDOP:{}".format(hdop))
-        # print("PDOP:{}".format(pdop))
-        # print("VDOP:{}".format(vdop))
-        # print("C/N0 max:{} dBHz".format(cnom))
-        # print("HPA:{} m".format(hpa0))
-        # print("VPA:{} m".format(vpa0))
-        print("GNSS Satellites in View:{}".format(gnsv))
-        print("GNSS Satellites in Use:{}".format(gnsu))
-        # print("GLONASS in Use:{}".format(glns))
+            # print("MSL altitude:{}m = {}ft".format(altd,round(float(altd)/0.3048),4))
+            # print("Speed over Ground:{} km/h".format(spdg))
+            # print("Course over Ground:{} degrees".format(csog))
+            # print("HDOP:{}".format(hdop))
+            # print("PDOP:{}".format(pdop))
+            # print("VDOP:{}".format(vdop))
+            # print("C/N0 max:{} dBHz".format(cnom))
+            # print("HPA:{} m".format(hpa0))
+            # print("VPA:{} m".format(vpa0))
+            print("GNSS Satellites in View:{}".format(gnsv))
+            print("GNSS Satellites in Use:{}".format(gnsu))
+            # print("GLONASS in Use:{}".format(glns))
+            return
 
 def main_with_pppd():
     global STREAM_COUNT
