@@ -76,7 +76,6 @@ def checkForFix():
             sleep(1)
             ser.write(b"AT+CGNSINF\r")
             print ("Unable to find fix. still looking for fix...")
-            return False
         else:
             ser.write(b"AT+CGNSINF\r")
 
@@ -418,7 +417,7 @@ try:
                     try:
                         date_time,time_f,clat, clon, spdg, gnsv, gnsu, glns = main_without_pppd()
                     except TypeError:
-                        print("TypeError avoided due to GPS not able to find fix")
+                        print("TypeError avoided due to GPS not beign able to find the fix")
                         date_time = "None"
                         time_f = "None"
                         clat = "0.00"
@@ -429,9 +428,9 @@ try:
                         glns = 'N'
                         sleep(1)
                         pass
-                    oled.text('GPS_T:'+time_f, 0, 0, True)
+                    oled.text('GPS_TIME:'+time_f, 0, 0, True)
                     oled.text(clat+','+clon, 0, 10, True)
-                    oled.text('GNSV:'+gnsv+' U:'+gnsu+' GLNS:'+glns, 0, 20, True)
+                    oled.text('GNSV:'+gnsv+' USE:'+gnsu+' GLNS:'+glns, 0, 20, True)
                 else:
                     # if not DEFINED_PI_ZERO_W:
                     #     oled.text('PRESS D23 to RESTART', 0, 0, True)
