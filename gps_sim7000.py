@@ -14,9 +14,9 @@ except:
 #     print("GPS TEST COUNTDOWN: {}".format(i))
 #     sleep(1)
 
-from os import system
+# from os import system
 import serial
-import subprocess
+# import subprocess
 from time import sleep
 # from ISStreamer.Streamer import Streamer
 
