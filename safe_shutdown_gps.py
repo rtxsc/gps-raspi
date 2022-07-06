@@ -166,7 +166,7 @@ def main_without_pppd():
 
         print (payload)
         print("Saving read #{} into buffer.\n\n".format(READ_COUNT))
-        # sleep(SECONDS_BETWEEN_READS) # disabled cuz we use OLED loop delay
+        sleep(0.1) # disabled cuz we use OLED loop delay
         return date_time[0],time_f,clat, clon, spdg, gnsv, gnsu, glns
 
 def load_hexsha_count() -> str:
