@@ -170,7 +170,7 @@ def main_without_pppd():
 
         print (payload)
         print("Saving read #{} into buffer.\n\n".format(READ_COUNT))
-        sleep(SECONDS_BETWEEN_READS) # disabled cuz we use OLED loop delay
+        # sleep(SECONDS_BETWEEN_READS) # disabled cuz we use OLED loop delay
         return date_time[0],time_f,clat, clon, spdg, gnsv, gnsu, glns
     else:
         print("Unable to find fix. Trying again later in the next loop around")
