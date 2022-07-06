@@ -205,6 +205,15 @@ try:
                     print('[INFO] You are up-to-date with remote repo.')
 
             else:
+                print("""
+                   __  __            __                  __      __     
+                  / / / /___        / /_____        ____/ /___ _/ /____ 
+                 / / / / __ \______/ __/ __ \______/ __  / __ `/ __/ _ \\
+                / /_/ / /_/ /_____/ /_/ /_/ /_____/ /_/ / /_/ / /_/  __/
+                \____/ .___/      \__/\____/      \__,_/\__,_/\__/\___/ 
+                    /_/  
+                                                                            
+                """)
                 print("\n[INFO] Nothing Fetched. Local repo already up-to-date with commit [%d]." % int(commit.count()))
                 if not DEFINED_PI_ZERO_W and ENABLE_AUDIO:
                     playTrack("git-pull-not-required.wav")
