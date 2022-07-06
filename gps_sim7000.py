@@ -149,7 +149,7 @@ def getCGNSINF():
             vpa0 = array[20] # Vertical Position Accuracy
 
             # print("MSL altitude:{}m = {}ft".format(altd,round(float(altd)/0.3048),4))
-            print("Speed over Ground:{} km/h".format(spdg))
+            # print("Speed over Ground:{} km/h".format(spdg))
             # print("Course over Ground:{} degrees".format(csog))
             # print("HDOP:{}".format(hdop))
             # print("PDOP:{}".format(pdop))
@@ -157,13 +157,13 @@ def getCGNSINF():
             # print("C/N0 max:{} dBHz".format(cnom))
             # print("HPA:{} m".format(hpa0))
             # print("VPA:{} m".format(vpa0))
-            print("GNSS Satellites in View:{}".format(gnsv))
-            print("GNSS Satellites in Use:{}".format(gnsu))
-            print("GLONASS in Use:{}".format(glns))
-            return
+            # print("GNSS Satellites in View:{}".format(gnsv))
+            # print("GNSS Satellites in Use:{}".format(gnsu))
+            # print("GLONASS in Use:{}".format(glns))
+            return utct, clat, clon, spdg, gnsv, gnsu, glns
         else:
             print('Waiting for response')
-        sleep(0.1)
+        sleep(0.5)
 
 def main_with_pppd():
     global STREAM_COUNT
@@ -223,11 +223,18 @@ def main_without_pppd():
         # Make sure there's a GPS fix before proceeding to data acquisition
         if checkForFix():
             READ_COUNT+=1
-            getCGNSINF()
-            latitude, longitude = getCoord()
-            coord = "lat:" + str(latitude) + "," + "lng:" + str(longitude)
-            print (coord)
-            print("Saving read #{} into buffer.\n".format(READ_COUNT))
+            utct, clat, clon, spdg, gnsv, gnsu, glns = getCGNSINF()
+            
+            payload =   "utct:" + str(utct)  + "," + 
+                        "clat:" + str(clat)  + "," + 
+                        "clon:" + str(clon)  + "," +
+                        "spdg:" + str(spdg)  + "," +  
+                        "gnsv:" + str(gnsv)  + "," +  
+                        "gnsu:" + str(gnsu)  + "," +  
+                        "glns:" + str(glns)  
+
+            print (payload)
+            print("Saving read #{} into buffer.\n\n".format(READ_COUNT))
             # Buffer the coordinates to be streamed
             # streamer.log("Coordinates",coord)
             sleep(SECONDS_BETWEEN_READS)
