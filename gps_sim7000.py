@@ -258,7 +258,7 @@ def main_without_pppd():
         print("Saving read #{} into buffer.\n\n".format(READ_COUNT))
         # Buffer the coordinates to be streamed
         # streamer.log("Coordinates",coord)
-        sleep(SECONDS_BETWEEN_READS)
+        # sleep(SECONDS_BETWEEN_READS)
         return date_time[0],time_f,clat, clon, spdg, gnsv, gnsu, glns
         # print "streaming location to Initial State"
         # Flush the streaming queue and send the data

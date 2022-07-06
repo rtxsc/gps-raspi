@@ -136,7 +136,8 @@ def main_without_pppd():
 
         print (payload)
         print("Saving read #{} into buffer.\n\n".format(READ_COUNT))
-        sleep(SECONDS_BETWEEN_READS)
+        return date_time[0],time_f,clat, clon, spdg, gnsv, gnsu, glns
+
 
 def load_hexsha_count() -> str:
     repo_path = '/home/pi/gps-raspi/'
