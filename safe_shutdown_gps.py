@@ -406,19 +406,19 @@ try:
         for i in range (0,127,2):
             if not disconnected:
                 oled.fill(0)
-                if i < 25:
+                if i < 20:
                     oled.text('Conn:'+str(conn_elapse_pretty)+'s', 0, 0, True)
                     oled.text('>>'+ssid_str+'<<', 0, 10, True)
                     oled.text('>>FW_Ver:'+FW_VERSION+'<<', 0, 20, True)
-                elif i >= 25 and i < 50:
+                elif i >= 20 and i < 45:
                     oled.text('>>>>>>> MODEL <<<<<<<', 0, 0, True)
                     oled.text(model_name[0:21], 0, 10, True)
                     oled.text(model_name[21:42], 0, 20, True)
-                elif i >= 50 and i < 75:
+                elif i >= 45 and i < 70:
                     oled.text('>>> COMMIT NUMBER <<<', 0, 0, True)
                     oled.text(committed_date, 0, 10, True)
                     oled.text("Commit #" + commit_number, 0, 20, True)
-                elif i >= 75 and i < 100:
+                elif i >= 70 and i < 120:
                     try:
                         date_time,time_f,clat, clon, spdg, gnsv, gnsu, glns = main_without_pppd()
                     except TypeError:
