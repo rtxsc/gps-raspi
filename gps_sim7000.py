@@ -24,7 +24,7 @@ from time import sleep
 # BUCKET_KEY = "SMMSQAMKS9Y9"
 # ACCESS_KEY = "ist_PxI02ioOp4KEOeDtd2VfPyWpDdEZ82h6"
 
-SECONDS_BETWEEN_READS   = 5
+SECONDS_BETWEEN_READS   = 1
 INIT_DELAY              = 2
 READ_COUNT              = 0
 STREAM_COUNT            = 0
@@ -258,7 +258,7 @@ def main_without_pppd():
         print("Saving read #{} into buffer.\n\n".format(READ_COUNT))
         # Buffer the coordinates to be streamed
         # streamer.log("Coordinates",coord)
-        # sleep(SECONDS_BETWEEN_READS)
+        sleep(SECONDS_BETWEEN_READS)
         return date_time[0],time_f,clat, clon, spdg, gnsv, gnsu, glns
         # print "streaming location to Initial State"
         # Flush the streaming queue and send the data

@@ -34,7 +34,7 @@ conn_started_ts = 0
 disconn_started_ts = 0
 disconnected = False
 
-SECONDS_BETWEEN_READS   = 5
+SECONDS_BETWEEN_READS   = 1
 INIT_DELAY              = 2
 READ_COUNT              = 0
 STREAM_COUNT            = 0
@@ -136,8 +136,8 @@ def main_without_pppd():
 
         print (payload)
         print("Saving read #{} into buffer.\n\n".format(READ_COUNT))
+        sleep(SECONDS_BETWEEN_READS)
         return date_time[0],time_f,clat, clon, spdg, gnsv, gnsu, glns
-
 
 def load_hexsha_count() -> str:
     repo_path = '/home/pi/gps-raspi/'
@@ -369,19 +369,25 @@ try:
         # print("SSID {} connected time:{}s".format(previous_ssid,conn_elapse))
         for i in range (0,127,2):
             if not disconnected:
+                date_time[0],time_f,clat, clon, spdg, gnsv, gnsu, glns = main_without_pppd()
+
                 oled.fill(0)
-                if i < 32:
+                if i < 25:
                     oled.text('Conn:'+str(conn_elapse_pretty)+'s', 0, 0, True)
                     oled.text('>>'+ssid_str+'<<', 0, 10, True)
                     oled.text('>>FW_Ver:'+FW_VERSION+'<<', 0, 20, True)
-                elif i >= 32 and i < 64:
+                elif i >= 25 and i < 50:
                     oled.text('>>>>>>> MODEL <<<<<<<', 0, 0, True)
                     oled.text(model_name[0:21], 0, 10, True)
                     oled.text(model_name[21:42], 0, 20, True)
-                elif i >= 64 and i < 96:
+                elif i >= 50 and i < 75:
                     oled.text('>>> COMMIT NUMBER <<<', 0, 0, True)
                     oled.text(committed_date, 0, 10, True)
                     oled.text("Commit #" + commit_number, 0, 20, True)
+                elif i >= 75 and i < 100:
+                    oled.text('GPS_T:'+time_f, 0, 0, True)
+                    oled.text(clat,clon, 0, 10, True)
+                    oled.text('GNSV:'+gnsv+' U:'+gnsu+' GLNS:'+glns, 0, 20, True)
                 else:
                     # if not DEFINED_PI_ZERO_W:
                     #     oled.text('PRESS D23 to RESTART', 0, 0, True)
