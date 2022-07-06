@@ -10,5 +10,5 @@ except:
     pass
 
 for i in range(0,100,20):
-    print("GPS TEST: {}".format(i))
+    print("GPS TEST COUNTDOWN: {}".format(i))
     sleep(0.5)
