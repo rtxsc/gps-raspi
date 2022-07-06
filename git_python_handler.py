@@ -55,13 +55,13 @@ def load_hexsha_count():
     global current_committed_count
 
     if DEFINED_PI_3B_PLUS:
-        save_filename = '/home/pi/run-at-boot/saves/pi3bplus_hexsha.pickle'
+        save_filename = '/home/pi/gps-raspi/saves/pi3bplus_hexsha.pickle'
     if DEFINED_PI_3B:
-        save_filename = '/home/pi/run-at-boot/saves/pi3b_hexsha.pickle'
+        save_filename = '/home/pi/gps-raspi/saves/pi3b_hexsha.pickle'
     if DEFINED_PI_3B_ORI:
-        save_filename = '/home/pi/run-at-boot/saves/pi3bori_hexsha.pickle'
+        save_filename = '/home/pi/gps-raspi/saves/pi3bori_hexsha.pickle'
     if DEFINED_PI_ZERO_W:
-        save_filename = '/home/pi/run-at-boot/saves/pizerow_hexsha.pickle'
+        save_filename = '/home/pi/gps-raspi/saves/pizerow_hexsha.pickle'
     try:
         with open(save_filename, 'rb') as f:
             data = pickle.load(f)
@@ -81,13 +81,13 @@ def load_hexsha_count():
 
 def save_hexsha_count(new_hexsha,new_commit_count):
     if DEFINED_PI_3B_PLUS:
-        save_filename = '/home/pi/run-at-boot/saves/pi3bplus_hexsha.pickle'
+        save_filename = '/home/pi/gps-raspi/saves/pi3bplus_hexsha.pickle'
     if DEFINED_PI_3B:
-        save_filename = '/home/pi/run-at-boot/saves/pi3b_hexsha.pickle'
+        save_filename = '/home/pi/gps-raspi/saves/pi3b_hexsha.pickle'
     if DEFINED_PI_3B_ORI:
-        save_filename = '/home/pi/run-at-boot/saves/pi3bori_hexsha.pickle'
+        save_filename = '/home/pi/gps-raspi/saves/pi3bori_hexsha.pickle'
     if DEFINED_PI_ZERO_W:
-        save_filename = '/home/pi/run-at-boot/saves/pizerow_hexsha.pickle'
+        save_filename = '/home/pi/gps-raspi/saves/pizerow_hexsha.pickle'
 
     data = { 
         'hexsha'        : new_hexsha,
@@ -109,7 +109,7 @@ def print_repository_info(repo):
 
 
 def playTrack(trackName, blocking = True):
-    trackLocation = "/home/pi/run-at-boot/audio/"
+    trackLocation = "/home/pi/gps-raspi/audio/"
     command = "aplay "+ trackLocation + trackName
     if not blocking:
         subprocess.Popen(command.split(), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
@@ -145,13 +145,13 @@ try:
         now = datetime.now()
         dt_string = now.strftime("%d/%m/%Y, %H:%M:%S, ")
         if DEFINED_PI_3B_PLUS:
-            f = open("/home/pi/run-at-boot/logfile/pi3bplus_githandler_log.txt", "a")
+            f = open("/home/pi/gps-raspi/logfile/pi3bplus_githandler_log.txt", "a")
         if DEFINED_PI_3B:
-            f = open("/home/pi/run-at-boot/logfile/pi3b_githandler_log.txt", "a")
+            f = open("/home/pi/gps-raspi/logfile/pi3b_githandler_log.txt", "a")
         if DEFINED_PI_ZERO_W:
-            f = open("/home/pi/run-at-boot/logfile/pizerow_githandler_log.txt", "a")
+            f = open("/home/pi/gps-raspi/logfile/pizerow_githandler_log.txt", "a")
         if DEFINED_PI_3B_ORI:
-            f = open("/home/pi/run-at-boot/logfile/pi3bori_githandler_log.txt", "a")
+            f = open("/home/pi/gps-raspi/logfile/pi3bori_githandler_log.txt", "a")
         f.write(str(detect_model() + " " + dt_string + str(e) + "\n"))
         f.close()
         pass
