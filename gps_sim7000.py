@@ -1,5 +1,7 @@
 """
 sudo screen /dev/ttyUSB2 115200
+sudo pip3 install reverse_geocoder
+sudo pip3 install pprint
 """
 
 from time import sleep
