@@ -49,6 +49,36 @@ except ImportError:
     const = lambda x: x
     gettime = lambda: int(time.time() * 1000) 
 
+def checkForFix():
+    # print ("checking for fix")
+    # Start the serial connection SIM7000E - ttyUSB2 on Pi Zero W
+    ser = serial.Serial(SERIAL_PORT, SERIAL_BAUD, timeout=5, rtscts=True, dsrdtr=True) 
+
+    # Turn on the GPS
+    ser.write(b"AT+CGNSPWR=1\r")
+    ser.write(b"AT+CGNSPWR?\r")
+    while True:
+        response = ser.readline()
+        if b"1" in response: # remove the whitespace before 1 for SIM7000E
+            # print("GPS is ON!")
+            break
+    # Ask for the navigation info parsed from NMEA sentences
+    ser.write(b"AT+CGNSINF\r")
+    print("Getting NMEA information from Satellite...")
+    while True:
+            response = ser.readline()
+            # Check if a fix was found
+            if b"+CGNSINF: 1,1," in response:
+                # print ("Fix found! OK!")
+                # print response
+                return True
+            # If a fix wasn't found, wait and try again
+            if b"+CGNSINF: 1,0," in response:
+                sleep(5)
+                ser.write(b"AT+CGNSINF\r")
+                print ("Unable to find fix. still looking for fix...")
+            else:
+                ser.write(b"AT+CGNSINF\r")
 
 def getCGNSINF():
     ser = serial.Serial(SERIAL_PORT, SERIAL_BAUD, timeout=5, rtscts=True, dsrdtr=True) 
