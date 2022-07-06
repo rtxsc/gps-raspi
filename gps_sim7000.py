@@ -161,7 +161,7 @@ def getCGNSINF():
             print("GNSS Satellites in View:{}".format(gnsv))
             print("GNSS Satellites in Use:{}".format(gnsu))
             # print("GLONASS in Use:{}".format(glns))
-            return
+        return
 
 def main_with_pppd():
     global STREAM_COUNT
