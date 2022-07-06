@@ -187,6 +187,7 @@ try:
                         process.communicate()[0]
                         playTrack("local-behind-origin.wav")
                         playTrack("pull-repo.wav")
+                    print('[INFO] Pulling commit {} from origin'.format(repo.head.commit.count()))
                     repo.remotes.origin.pull()
                     save_hexsha_count(str(repo.head.commit.hexsha), int(commit.count()))
                     if not DEFINED_PI_ZERO_W and ENABLE_AUDIO:
@@ -197,6 +198,7 @@ try:
                         playTrack("local-ahead-origin.wav")
                     print('[INFO] Your local commit is {} commits ahead previous saved origin.\n'.format(abs(diff)))
                     # repo.remotes.origin.push()
+                    print('[INFO] Pulling commit no matter what')
                     repo.remotes.origin.pull()
                     save_hexsha_count(str(repo.head.commit.hexsha), int(commit.count()))
                 else:
