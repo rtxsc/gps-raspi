@@ -76,6 +76,7 @@ def checkForFix():
             sleep(1)
             ser.write(b"AT+CGNSINF\r")
             print ("Unable to find fix. still looking for fix...")
+            return False
         else:
             ser.write(b"AT+CGNSINF\r")
 
