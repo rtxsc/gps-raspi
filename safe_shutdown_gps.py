@@ -53,7 +53,6 @@ def checkForFix():
     print ("checking for fix")
     # Start the serial connection SIM7000E - ttyUSB2 on Pi Zero W
     ser = serial.Serial(SERIAL_PORT, SERIAL_BAUD, timeout=5, rtscts=True, dsrdtr=True) 
-
     # Turn on the GPS
     ser.write(b"AT+CGNSPWR=1\r")
     ser.write(b"AT+CGNSPWR?\r")
@@ -417,7 +416,11 @@ try:
                     oled.text(committed_date, 0, 10, True)
                     oled.text("Commit #" + commit_number, 0, 20, True)
                 elif i >= 75 and i < 100:
-                    date_time,time_f,clat, clon, spdg, gnsv, gnsu, glns = main_without_pppd()
+                    try:
+                        date_time,time_f,clat, clon, spdg, gnsv, gnsu, glns = main_without_pppd()
+                    except TypeError:
+                        print("TypeError avoided due to GPS not able to find fix")
+                        pass
                     oled.text('GPS_T:'+time_f, 0, 0, True)
                     oled.text(clat+','+clon, 0, 10, True)
                     oled.text('GNSV:'+gnsv+' U:'+gnsu+' GLNS:'+glns, 0, 20, True)
