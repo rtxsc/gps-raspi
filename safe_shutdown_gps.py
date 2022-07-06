@@ -79,7 +79,7 @@ def checkForFix():
             return False
         else:
             ser.write(b"AT+CGNSINF\r")
-            return False
+            # DO NOT RETURN FALSE HERE CUZ IT PREVENTS THE RETRYING OF FINDING FIX
 
 def getCGNSINF():
     ser = serial.Serial(SERIAL_PORT, SERIAL_BAUD, timeout=5, rtscts=True, dsrdtr=True) 
