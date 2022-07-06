@@ -50,7 +50,7 @@ except ImportError:
     gettime = lambda: int(time.time() * 1000) 
 
 def checkForFix():
-    # print ("checking for fix")
+    print ("checking for fix")
     # Start the serial connection SIM7000E - ttyUSB2 on Pi Zero W
     ser = serial.Serial(SERIAL_PORT, SERIAL_BAUD, timeout=5, rtscts=True, dsrdtr=True) 
 
@@ -66,19 +66,21 @@ def checkForFix():
     ser.write(b"AT+CGNSINF\r")
     print("Getting NMEA information from Satellite...")
     while True:
-            response = ser.readline()
-            # Check if a fix was found
-            if b"+CGNSINF: 1,1," in response:
-                # print ("Fix found! OK!")
-                # print response
-                return True
-            # If a fix wasn't found, wait and try again
-            if b"+CGNSINF: 1,0," in response:
-                sleep(5)
-                ser.write(b"AT+CGNSINF\r")
-                print ("Unable to find fix. still looking for fix...")
-            else:
-                ser.write(b"AT+CGNSINF\r")
+        response = ser.readline()
+        # Check if a fix was found
+        if b"+CGNSINF: 1,1," in response:
+            # print ("Fix found! OK!")
+            # print response
+            return True
+        # If a fix wasn't found, wait and try again
+        if b"+CGNSINF: 1,0," in response:
+            sleep(1)
+            ser.write(b"AT+CGNSINF\r")
+            print ("Unable to find fix. still looking for fix...")
+            return False
+        else:
+            ser.write(b"AT+CGNSINF\r")
+            return False
 
 def getCGNSINF():
     ser = serial.Serial(SERIAL_PORT, SERIAL_BAUD, timeout=5, rtscts=True, dsrdtr=True) 
@@ -168,6 +170,8 @@ def main_without_pppd():
         print("Saving read #{} into buffer.\n\n".format(READ_COUNT))
         sleep(SECONDS_BETWEEN_READS) # disabled cuz we use OLED loop delay
         return date_time[0],time_f,clat, clon, spdg, gnsv, gnsu, glns
+    else:
+        print("Unable to find fix. Trying again later in the next loop around")
 
 def load_hexsha_count() -> str:
     repo_path = '/home/pi/gps-raspi/'
