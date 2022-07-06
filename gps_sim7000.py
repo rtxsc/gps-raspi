@@ -28,7 +28,7 @@ INIT_DELAY = 2
 READ_COUNT = 0
 STREAM_COUNT = 0
 DATA_POINT = 2 # GPS lat/lgt recorded before transmission
-SERIAL_PORT = 'ttyUSB2'
+SERIAL_PORT = '/dev/ttyUSB2'
 SERIAL_BAUD = 115200
 
 # Start PPPD
@@ -74,8 +74,8 @@ def closePPPD():
 def checkForFix():
     # print ("checking for fix")
     # Start the serial connection SIM7000E - ttyUSB2 on Pi Zero W
-    ser=serial.Serial('/dev/ttyUSB2', 115200, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, timeout=1)
-
+    # ser=serial.Serial('/dev/ttyUSB2', 115200, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, timeout=1)
+    ser = serial.Serial(SERIAL_PORT, 115200, timeout=5, rtscts=True, dsrdtr=True) 
     # Start the serial connection SIM808
     # ser=serial.Serial('/dev/ttyS0', 115200, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, timeout=1)
 
@@ -108,7 +108,8 @@ def checkForFix():
 # Read the GPS data for Latitude and Longitude
 def getCoord():
     # Start the serial connection SIM7000E
-    ser=serial.Serial('/dev/ttyUSB2', 115200, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, timeout=1)
+    # ser=serial.Serial('/dev/ttyUSB2', 115200, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, timeout=1)
+    ser = serial.Serial(SERIAL_PORT, 115200, timeout=5, rtscts=True, dsrdtr=True) 
 
     # Start the serial connection SIM808
     # ser=serial.Serial('/dev/ttyS0', 115200, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, timeout=1)
