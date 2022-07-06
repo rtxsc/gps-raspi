@@ -241,6 +241,5 @@ def main_without_pppd():
                 # streamer.flush()
                 # print "streaming complete"
 
-
 if __name__ == "__main__":
     main_without_pppd()
