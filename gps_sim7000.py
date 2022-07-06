@@ -73,10 +73,7 @@ def closePPPD():
 def checkForFix():
     # print ("checking for fix")
     # Start the serial connection SIM7000E - ttyUSB2 on Pi Zero W
-    # ser=serial.Serial('/dev/ttyUSB2', 115200, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, timeout=1)
     ser = serial.Serial(SERIAL_PORT, SERIAL_BAUD, timeout=5, rtscts=True, dsrdtr=True) 
-    # Start the serial connection SIM808
-    # ser=serial.Serial('/dev/ttyS0', 115200, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, timeout=1)
 
     # Turn on the GPS
     ser.write(b"AT+CGNSPWR=1\r")
@@ -88,7 +85,7 @@ def checkForFix():
             break
     # Ask for the navigation info parsed from NMEA sentences
     ser.write(b"AT+CGNSINF\r")
-    print("Getting NMEA...")
+    print("Getting NMEA information from Satellite...")
     while True:
             response = ser.readline()
             # Check if a fix was found
@@ -220,7 +217,10 @@ def main_without_pppd():
     # streamer = Streamer(bucket_name=BUCKET_NAME, bucket_key=BUCKET_KEY, access_key=ACCESS_KEY, buffer_size=20)
     # Wait long enough for the request to complete
     while True:
-        # Make sure there's a GPS fix
+        # Make sure there's a GPS fix before proceeding to data acquisition
+        if checkForFix():
+            getCGNSINF()
+
         if checkForFix():
             # Get lat and long
             if getCoord():
@@ -228,7 +228,6 @@ def main_without_pppd():
                 latitude, longitude = getCoord()
                 coord = "lat:" + str(latitude) + "," + "lng:" + str(longitude)
                 print (coord)
-                getCGNSINF()
                 print("Saving read #{} into buffer.\n".format(READ_COUNT))
                 # Buffer the coordinates to be streamed
                 # streamer.log("Coordinates",coord)
