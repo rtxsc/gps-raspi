@@ -36,7 +36,7 @@ try:
                         print("UTC_Date={}, UTC_Time={}, lat={}, lng={}".format(reader.date_string(), reader.timestamp, reader.latitude_string(), reader.longitude_string()))
 
         except Exception as e:
-            print("Error: {}".format(str(e)))
+            print("Error Exception: {}".format(str(e)))
             sleep(1)
 
 except KeyboardInterrupt:
