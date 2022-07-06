@@ -109,6 +109,7 @@ def getCoord():
     # Start the serial connection SIM7000E
     ser = serial.Serial(SERIAL_PORT, SERIAL_BAUD, timeout=5, rtscts=True, dsrdtr=True) 
     ser.write(b"AT+CGNSINF\r")
+    print("Getting Latitude/Longitude...")
     while True:
         response = ser.readline().decode()
         if "+CGNSINF: 1," in response:
@@ -123,6 +124,7 @@ def getCoord():
 def getCGNSINF():
     ser = serial.Serial(SERIAL_PORT, SERIAL_BAUD, timeout=5, rtscts=True, dsrdtr=True) 
     ser.write(b"AT+CGNSINF\r")
+    print("Getting Speed/Satellite Count...")
     while True:
         response = ser.readline().decode()
         if "+CGNSINF: 1," in response:
