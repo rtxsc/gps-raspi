@@ -8,9 +8,9 @@ try:
 except:
     pass
 
-for i in range(0,100,10):
-    print("GPS TEST COUNTDOWN: {}".format(i))
-    sleep(1)
+# for i in range(0,100,10):
+#     print("GPS TEST COUNTDOWN: {}".format(i))
+#     sleep(1)
 
 
 from os import system
@@ -108,7 +108,7 @@ def checkForFix():
 # Read the GPS data for Latitude and Longitude
 def getCoord():
     # Start the serial connection SIM7000E
-    ser=serial.Serial('/dev/ttyS0', 9600, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, timeout=1)
+    ser=serial.Serial('/dev/'+SERIAL_PORT, SERIAL_BAUD, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, timeout=1)
 
     # Start the serial connection SIM808
     # ser=serial.Serial('/dev/ttyS0', 115200, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, timeout=1)
