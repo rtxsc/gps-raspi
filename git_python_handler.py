@@ -196,7 +196,8 @@ try:
                     if not DEFINED_PI_ZERO_W and ENABLE_AUDIO:
                         playTrack("local-ahead-origin.wav")
                     print('[INFO] Your local commit is {} commits ahead previous saved origin.\n'.format(abs(diff)))
-                    repo.remotes.origin.push()
+                    # repo.remotes.origin.push()
+                    repo.remotes.origin.pull()
                     save_hexsha_count(str(repo.head.commit.hexsha), int(commit.count()))
                 else:
                     print('[INFO] You are up-to-date with remote repo.')
