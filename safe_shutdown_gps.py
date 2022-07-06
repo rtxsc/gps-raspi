@@ -399,7 +399,7 @@ try:
         # print("SSID {} connected time:{}s".format(previous_ssid,conn_elapse))
         for i in range (0,127,2):
             if not disconnected:
-                date_time[0],time_f,clat, clon, spdg, gnsv, gnsu, glns = main_without_pppd()
+                date_time,time_f,clat, clon, spdg, gnsv, gnsu, glns = main_without_pppd()
 
                 oled.fill(0)
                 if i < 25:
