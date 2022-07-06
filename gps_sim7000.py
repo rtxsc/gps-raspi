@@ -111,9 +111,9 @@ def getCoord():
     ser.write(b"AT+CGNSINF\r")
     while True:
         response = ser.readline().decode()
-        if b"+CGNSINF: 1," in response:
+        if "+CGNSINF: 1," in response:
             # Split the reading by commas and return the parts referencing lat and long
-            array = response.split(b",")
+            array = response.split(",")
             lat = array[3]
             # print lat
             lon = array[4]
@@ -125,8 +125,8 @@ def getCGNSINF():
     ser.write(b"AT+CGNSINF\r")
     while True:
         response = ser.readline().decode()
-        if b"+CGNSINF: 1," in response:
-            array = response.split(b",")
+        if "+CGNSINF: 1," in response:
+            array = response.split(",")
             grun = array[0] # GNSS run status
             sfix = array[1] # Fix status
             utct = array[2] # UTC date & time
@@ -150,7 +150,7 @@ def getCGNSINF():
             vpa0 = array[20] # Vertical Position Accuracy
 
             # print("MSL altitude:{}m = {}ft".format(altd,round(float(altd)/0.3048),4))
-            # print("Speed over Ground:{} km/h".format(spdg))
+            print("Speed over Ground:{} km/h".format(spdg))
             # print("Course over Ground:{} degrees".format(csog))
             # print("HDOP:{}".format(hdop))
             # print("PDOP:{}".format(pdop))
@@ -160,7 +160,7 @@ def getCGNSINF():
             # print("VPA:{} m".format(vpa0))
             print("GNSS Satellites in View:{}".format(gnsv))
             print("GNSS Satellites in Use:{}".format(gnsu))
-            # print("GLONASS in Use:{}".format(glns))
+            print("GLONASS in Use:{}".format(glns))
         return
 
 def main_with_pppd():
