@@ -76,13 +76,13 @@ def checkForFix():
         if b"+CGNSINF: 1,0," in response:
             sleep(1)
             ser.write(b"AT+CGNSINF\r")
-            print ("Unable to find fix. still looking for fix...")
+            print ("[WARNING] Unable to find fix. still looking for fix...")
             return False
         else:
             fix_search_count += 1
-            print ("\nRetrying obtaining fix for the {} times".format(fix_search_count))
+            print ("[WARNING] Retrying obtaining fix for the {} times".format(fix_search_count))
             ser.write(b"AT+CGNSINF\r")
-            # DO NOT RETURN FALSE HERE CUZ IT PREVENTS THE RETRYING OF FINDING FIX
+            # DO NOT RETURN FALSE HERE CUZ IT PREVENTS THE RETRYING OF FINDING FIX 6.7.2022
 
 def getCGNSINF():
     ser = serial.Serial(SERIAL_PORT, SERIAL_BAUD, timeout=5, rtscts=True, dsrdtr=True) 
@@ -128,7 +128,7 @@ def getCGNSINF():
             # print("GLONASS in Use:{}".format(glns))
             return utct, clat, clon, spdg, gnsv, gnsu, glns
         else:
-            print('Waiting for response')
+            print('\nWaiting for response')
         sleep(0.5)
 
 def main_without_pppd():
