@@ -9,7 +9,7 @@ COMMITS_TO_PRINT = 1
 
 prev_hexsha = None
 current_committed_count = 0
-repo_path = '/home/pi/run-at-boot/'
+repo_path = '/home/pi/gps-raspi/'
 
 DEFINED_PI_ZERO_W       = False
 DEFINED_PI_3B_PLUS      = False
