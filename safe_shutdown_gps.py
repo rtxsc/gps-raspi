@@ -406,6 +406,15 @@ try:
                     date_time,time_f,clat, clon, spdg, gnsv, gnsu, glns = main_without_pppd()
                 except TypeError:
                     print("TypeError avoided due to GPS not able to find fix")
+                    date_time = "None"
+                    time_f = "None"
+                    clat = "0.00"
+                    clon = "0.00"
+                    spdg = "None"
+                    gnsv = 'N'
+                    gnsu = 'N'
+                    glns = 'N'
+                    sleep(1)
                     pass
                 oled.fill(0)
                 if i < 25:
