@@ -254,7 +254,7 @@ def main_without_pppd():
                     "gnsu:" + str(gnsu)  + ", " + \
                     "glns:" + str(glns)  
 
-        # print (payload)
+        print (payload)
         # print("Saving read #{} into buffer.\n\n".format(READ_COUNT))
         # Buffer the coordinates to be streamed
         # streamer.log("Coordinates",coord)
