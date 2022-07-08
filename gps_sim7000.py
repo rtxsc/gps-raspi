@@ -87,7 +87,7 @@ def checkForFix():
             break
     # Ask for the navigation info parsed from NMEA sentences
     ser.write(b"AT+CGNSINF\r")
-    print("Getting NMEA information from Satellite...")
+    # print("Getting NMEA information from Satellite...")
     while True:
             response = ser.readline()
             # Check if a fix was found
@@ -163,8 +163,8 @@ def getCGNSINF():
             # print("GNSS Satellites in Use:{}".format(gnsu))
             # print("GLONASS in Use:{}".format(glns))
             return utct, clat, clon, spdg, gnsv, gnsu, glns
-        else:
-            print('Waiting for response')
+        # else:
+        #     print('Waiting for response')
         sleep(0.5)
 
 def main_with_pppd():
@@ -254,8 +254,8 @@ def main_without_pppd():
                     "gnsu:" + str(gnsu)  + ", " + \
                     "glns:" + str(glns)  
 
-        print (payload)
-        print("Saving read #{} into buffer.\n\n".format(READ_COUNT))
+        # print (payload)
+        # print("Saving read #{} into buffer.\n\n".format(READ_COUNT))
         # Buffer the coordinates to be streamed
         # streamer.log("Coordinates",coord)
         sleep(SECONDS_BETWEEN_READS)
