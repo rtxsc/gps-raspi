@@ -73,10 +73,10 @@ def closePPPD():
 
 # Check for a GPS fix
 def checkForFix():
+    fix_search_count = 0
     # print ("checking for fix")
     # Start the serial connection SIM7000E - ttyUSB2 on Pi Zero W
     ser = serial.Serial(SERIAL_PORT, SERIAL_BAUD, timeout=5, rtscts=True, dsrdtr=True) 
-
     # Turn on the GPS
     ser.write(b"AT+CGNSPWR=1\r")
     ser.write(b"AT+CGNSPWR?\r")
@@ -89,19 +89,24 @@ def checkForFix():
     ser.write(b"AT+CGNSINF\r")
     # print("Getting NMEA information from Satellite...")
     while True:
-            response = ser.readline()
-            # Check if a fix was found
-            if b"+CGNSINF: 1,1," in response:
-                # print ("Fix found! OK!")
-                # print response
-                return True
-            # If a fix wasn't found, wait and try again
-            if b"+CGNSINF: 1,0," in response:
-                sleep(5)
-                ser.write(b"AT+CGNSINF\r")
-                print ("Unable to find fix. still looking for fix...")
-            else:
-                ser.write(b"AT+CGNSINF\r")
+        response = ser.readline()
+        # Check if a fix was found
+        if b"+CGNSINF: 1,1," in response:
+            # print ("Fix found! OK!")
+            # print response
+            return True
+        # If a fix wasn't found, wait and try again
+        if b"+CGNSINF: 1,0," in response:
+            sleep(1)
+            ser.write(b"AT+CGNSINF\r")
+            print ("[WARNING] Unable to find fix. still looking for fix...")
+            return False
+        else:
+            fix_search_count += 1
+            # print ("[WARNING] Retrying obtaining fix for the {} times".format(fix_search_count))
+            ser.write(b"AT+CGNSINF\r")
+            # DO NOT RETURN FALSE HERE CUZ IT PREVENTS THE RETRYING OF FINDING FIX 6.7.2022
+
 
 # Read the GPS data for Latitude and Longitude
 def getCoord():
@@ -163,8 +168,8 @@ def getCGNSINF():
             # print("GNSS Satellites in Use:{}".format(gnsu))
             # print("GLONASS in Use:{}".format(glns))
             return utct, clat, clon, spdg, gnsv, gnsu, glns
-        # else:
-        #     print('Waiting for response')
+        else:
+            print('Waiting for response')
         sleep(0.5)
 
 def main_with_pppd():
