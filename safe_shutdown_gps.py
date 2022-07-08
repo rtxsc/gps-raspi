@@ -3,6 +3,7 @@ try:
     import git_python_handler
 except:
     pass
+import gps
 import psutil
 import board
 from digitalio import DigitalInOut, Direction, Pull
@@ -158,6 +159,12 @@ def main_without_pppd():
         time_f = time_array[0] + ':' + time_array[1] + ':' + time_array[2]
         # print("Date:{}".format(date_time[0]))
         # print("Time:{}".format(time_f))
+
+        gps.latlon = clat + "," + clon
+        gps.gps_dt = time_f
+        gps.gnsv = gnsv
+        gps.gnsu = gnsu
+        gps.glns = glns
 
         payload =   "date:" + str(date_time[0]) + ", " + \
                     "time:" + str(time_f)       + ", " + \
