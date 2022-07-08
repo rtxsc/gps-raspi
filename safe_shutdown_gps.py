@@ -81,7 +81,7 @@ def checkForFix():
             return False
         else:
             fix_search_count += 1
-            print ("[WARNING] Retrying obtaining fix for the {} times".format(fix_search_count))
+            # print ("[WARNING] Retrying obtaining fix for the {} times".format(fix_search_count))
             ser.write(b"AT+CGNSINF\r")
             # DO NOT RETURN FALSE HERE CUZ IT PREVENTS THE RETRYING OF FINDING FIX 6.7.2022
 
@@ -130,7 +130,7 @@ def getCGNSINF():
             return utct, clat, clon, spdg, gnsv, gnsu, glns
         else:
             print('\nWaiting for response')
-        sleep(0.5)
+        sleep(1)
 
 def main_without_pppd():
     global READ_COUNT
@@ -176,7 +176,7 @@ def main_without_pppd():
                     "glns:" + str(glns)  
 
         print (payload)
-        print("Saving read #{} into buffer.\n\n".format(READ_COUNT))
+        print("Saving read #{} into buffer.\n".format(READ_COUNT))
         # sleep(SECONDS_BETWEEN_READS) # disabled cuz we use OLED loop delay
         return date_time[0],time_f,clat, clon, spdg, gnsv, gnsu, glns
     else:
