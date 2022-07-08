@@ -3,7 +3,7 @@ sudo screen /dev/ttyUSB2 115200
 sudo pip3 install reverse_geocoder
 sudo pip3 install pprintpp
 """
-
+import gps
 from time import sleep
 try:
     import git_python_handler
@@ -259,6 +259,13 @@ def main_without_pppd():
         # Buffer the coordinates to be streamed
         # streamer.log("Coordinates",coord)
         sleep(SECONDS_BETWEEN_READS)
+
+        gps.latlon = clat + "," + clon
+        gps.gps_dt = time_f
+        gps.gnsv = gnsv
+        gps.gnsu = gnsu
+        gps.glns = glns
+
         return date_time[0],time_f,clat, clon, spdg, gnsv, gnsu, glns
         # print "streaming location to Initial State"
         # Flush the streaming queue and send the data
@@ -266,10 +273,11 @@ def main_without_pppd():
         # print "streaming complete"
 
 if __name__ == "__main__":
-    for c in range(INIT_DELAY):
-        print ("Starting in T-minus {} second".format(INIT_DELAY-c))
-        sleep(1)
+    main_without_pppd()
+    # for c in range(INIT_DELAY):
+    #     print ("Starting in T-minus {} second".format(INIT_DELAY-c))
+    #     sleep(1)
 
-    while(1):
-        print("forever loop main")
-        print(main_without_pppd())
+    # while(1):
+    #     print("forever loop main")
+    #     print(main_without_pppd())
