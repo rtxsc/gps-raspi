@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+# this is git handler for gps-raspi
 from git import Repo
 import subprocess
 import os, sys
