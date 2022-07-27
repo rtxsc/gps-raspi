@@ -5,10 +5,10 @@ sudo pip3 install pprintpp
 """
 import gps
 from time import sleep
-# try:
-#     import git_python_handler
-# except:
-#     pass
+try:
+    import git_python_handler
+except:
+    pass
 
 # for i in range(0,100,10):
 #     print("GPS TEST COUNTDOWN: {}".format(i))
