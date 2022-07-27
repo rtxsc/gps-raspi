@@ -242,7 +242,19 @@ def main_without_pppd():
 
         time_int = int(date_time[1]) + 80000 
 
-        time_str = str(time_int)
+        if(time_int < 100000):
+            time_str = "0" + str(time_int)
+        elif (time_int >= 160000 and time_int < 161000):
+            time_int = time_int - 240000
+            time_str = "000" + str(time_int)
+        elif (time_int >= 161000 and time_int < 17000):
+            time_int = time_int - 240000
+            time_str = "00" + str(time_int)
+        elif (time_int >= 170000 and time_int < 240000):
+            time_int = time_int - 240000
+            time_str = "0" + str(time_int)
+        else
+            time_str = str(time_int)
         for index in range(0, len(time_str), timelength):
             time_array.append(time_str[index : index+timelength])
         
